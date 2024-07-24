@@ -53,9 +53,9 @@ body {
 }
 
 .page img {
-    width: 80%;
-    height: auto;
-    object-fit: cover;
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
     border: 1px solid #ccc;
     position: absolute;
     top: 10%;

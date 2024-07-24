@@ -9,16 +9,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const lyrics = [
         { time: 0, text: "....." },
-        { time: 3, text: "Dapatkah aku memeluknya?" },
-        { time: 6, text: "Menjadikan bintang di surga" },
-        { time: 9, text: "Memberikan warna yang bisa menjadikan indah" },
-        { time: 16, text: "Aku tak mampu tuk mengatakan" },
-        { time: 20, text: "Aku tak mampu tuk mengungkapkan" },
-        { time: 23, text: "Hingga sampai saat ini, perasaan ku telah tertinggal" },
-        { time: 30, text: "Dapatkah aku memeluknya?" },
-        { time: 33, text: "Menjadikan bintang-bintang di surga" },
-        { time: 37, text: "Memberikan warna yang bisa dan teruslah bisa menjadikan indah" },
-        { time: 44, text: "....." },
+        { time: 14, text: "She's my sunshine in the rain" },
+        { time: 19, text: "My Tylenol when I'm in pain yeah" },
+        { time: 23, text: "Let me tell you what she means to me" },
+        { time: 30, text: "Like a tall glass of lemonade" },
+        { time: 33, text: "When it's burning hot on summer days" },
+        { time: 39, text: "She's exactly what I need" },
+        { time: 44, text: "She's soothing like the ocean rushing on the sand" },
+        { time: 51, text: "She takes care of me baby" },
+        { time: 56, text: "And she helps me be a better man" },
+        { time: 59, text: "She's so beautiful sometimes I stop to close my eyes" },
+        { time: 67, text: "She's exactly what I need" },
+        { time: 75, text: "She's my smile when I'm feeling blue" },
+        { time: 79, text: "....." },
     ];
 
     playPauseButton.addEventListener('click', () => {
@@ -31,14 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
             playPauseButton.innerHTML = '<i data-feather="pause"></i>'; 
             feather.replace(); 
             displayDuration(); 
-            startPageTransition(); 
-            syncLyrics(); 
+            syncContent(); 
         } else {
             audio.pause();
             playPauseButton.innerHTML = '<i data-feather="play"></i>';
             feather.replace(); 
             clearInterval(intervalId); 
-            clearInterval(lyricsInterval); 
         }
     }
 
@@ -109,27 +110,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function nextPage() {
-        if (currentPage < rightPages.length - 1) {
-            currentPage++;
-        } else {
-            currentPage = 0; 
-        }
-        showPage(currentPage);
-    }
-
-    function startPageTransition() {
-        intervalId = setInterval(nextPage, 4000);
-    }
-
-    function syncLyrics() {
-        const lyricsInterval = setInterval(() => {
+    function syncContent() {
+        audio.addEventListener('timeupdate', () => {
             const currentTime = audio.currentTime;
             const currentLyric = lyrics.find(lyric => Math.floor(lyric.time) === Math.floor(currentTime));
             if (currentLyric) {
                 lyricsContainer.textContent = currentLyric.text;
+                const pageIndex = lyrics.indexOf(currentLyric);
+                if (pageIndex !== -1 && pageIndex < rightPages.length) {
+                    showPage(pageIndex);
+                    currentPage = pageIndex;
+                }
             }
-        }, 1000);
+        });
     }
 
     preloadImages(rightPages).then(() => {
