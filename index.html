@@ -1,88 +1,1275 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buat Amaa Cantik</title>
+    <title>Buat Kae | Happy Graduation Cantik 🎓✨</title>
+    <!-- Google Fonts: Playfair Display, Caveat (Tulisan Tangan), Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Feather Icons & Canvas Confetti CDN -->
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at center 20%, #2e1a10 0%, #170d08 70%, #0d0704 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Canvas Partikel Bunga */
+        #petals-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Header Navigasi Atas */
+        .top-nav {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+            max-width: 1050px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cap-badge {
+            font-size: 24px;
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: #fef3c7;
+            line-height: 1.1;
+        }
+
+        .brand .sub {
+            font-family: 'Caveat', cursive;
+            color: #fcd34d;
+            font-size: 17px;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .pill-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .highlight-btn {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fef08a;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+        .highlight-btn:hover { background: rgba(245, 158, 11, 0.35); transform: scale(1.05); }
+
+        .letter-btn {
+            background: rgba(225, 29, 72, 0.2);
+            color: #fecdd3;
+            border: 1px solid rgba(225, 29, 72, 0.4);
+        }
+        .letter-btn:hover { background: rgba(225, 29, 72, 0.35); transform: scale(1.05); }
+
+        /* Container Buku */
+        .container {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: 10px 20px;
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        .book-container {
+            width: 100%;
+            max-width: 860px;
+            min-height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Sampul Buku (Hardcover Album) */
+        .book-cover {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, #3d1b09 0%, #200d05 100%);
+            border: 3px solid rgba(217, 119, 6, 0.6);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(245, 158, 11, 0.2);
+            padding: 36px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .cover-filigree {
+            position: absolute;
+            color: rgba(245, 158, 11, 0.5);
+            font-size: 28px;
+            user-select: none;
+        }
+        .top-left { top: 12px; left: 14px; }
+        .top-right { top: 12px; right: 14px; transform: scaleX(-1); }
+        .bottom-left { bottom: 12px; left: 14px; transform: scaleY(-1); }
+        .bottom-right { bottom: 12px; right: 14px; transform: scale(-1); }
+
+        .cover-badge {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fde68a;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 5px 16px;
+            border-radius: 9999px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .cover-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            color: #fef3c7;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .cover-subtitle {
+            font-family: 'Caveat', cursive;
+            font-size: 26px;
+            color: #fcd34d;
+            margin-top: 6px;
+        }
+
+        .gold-line {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #f59e0b, transparent);
+            margin: 14px auto 0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #1c1109;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 12px 26px;
+            border: none;
+            border-radius: 9999px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+        .cover-author {
+            font-size: 11px;
+            color: rgba(254, 243, 199, 0.5);
+        }
+
+        /* Dua Halaman Terbuka (Spread) */
+        .book {
+            width: 100%;
+            aspect-ratio: 16/10.5;
+            background: #fdfbf7;
+            border-radius: 12px;
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.85);
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #3d2315;
+        }
+
+        .paper-texture {
+            background-color: #faf6f0;
+            background-image: radial-gradient(at top left, rgba(255,255,255,0.7), transparent 60%),
+                              linear-gradient(to right, rgba(0,0,0,0.08) 0%, transparent 8%, transparent 92%, rgba(0,0,0,0.08) 100%);
+        }
+
+        .bookmark-ribbon {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 48px;
+            background: #e11d48;
+            z-index: 15;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+            cursor: pointer;
+        }
+
+        .page {
+            width: 50%;
+            height: 100%;
+            padding: 28px 32px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .left-page {
+            border-right: 1px solid rgba(0,0,0,0.12);
+            justify-content: space-between;
+        }
+
+        .page-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #78716c;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            padding-bottom: 8px;
+        }
+
+        .lyrics-wrapper {
+            text-align: center;
+            position: relative;
+            margin: auto 0;
+        }
+
+        .lemon-icon { font-size: 28px; margin-bottom: 8px; }
+        .quote-mark { font-family: 'Playfair Display', serif; font-size: 40px; color: #f59e0b; opacity: 0.3; line-height: 0; }
+        .right-mark { text-align: right; margin-top: 10px; }
+
+        .lyrics-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #291b10;
+            line-height: 1.35;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .lyrics-translation {
+            font-family: 'Caveat', cursive;
+            font-size: 20px;
+            color: #854d0e;
+            margin-top: 8px;
+            min-height: 30px;
+        }
+
+        .page-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            padding-top: 8px;
+        }
+
+        .for-kae { font-family: 'Caveat', cursive; font-size: 18px; color: #b45309; }
+        .text-link { background: none; border: none; color: #854d0e; cursor: pointer; text-decoration: underline; font-size: 11px; }
+
+        /* Halaman Kanan - Polaroid */
+        .right-page {
+            justify-content: center;
+            align-items: center;
+        }
+
+        .polaroid-card {
+            background: #ffffff;
+            padding: 12px 12px 18px;
+            border-radius: 4px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.18), 0 1px 3px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 290px;
+            position: relative;
+            transform: rotate(-1deg);
+            transition: transform 0.3s ease;
+        }
+        .polaroid-card:hover { transform: rotate(0deg) scale(1.02); }
+
+        .washi-tape {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-1.5deg);
+            width: 85px;
+            height: 22px;
+            background: rgba(254, 240, 138, 0.85);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .photo-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/5;
+            background: #f5f5f4;
+            overflow: hidden;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .photo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .photo-wrapper:hover img { transform: scale(1.04); }
+
+        .zoom-badge {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .photo-wrapper:hover .zoom-badge { opacity: 1; }
+
+        .sticker {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            font-size: 24px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .polaroid-caption {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .caption-text {
+            font-family: 'Caveat', cursive;
+            font-size: 22px;
+            color: #1c1917;
+            line-height: 1.1;
+        }
+
+        .caption-sub {
+            font-size: 10px;
+            color: #a8a29e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .right-page-num {
+            position: absolute;
+            bottom: 12px;
+            right: 18px;
+            font-size: 11px;
+            color: #a8a29e;
+        }
+
+        /* Navigasi Panah */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            background: #ffffff;
+            border: 1px solid #e7e5e4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 20;
+            color: #444;
+            transition: all 0.2s ease;
+        }
+        .nav-btn:hover { background: #f59e0b; color: white; transform: translateY(-50%) scale(1.1); }
+        .prev-btn { left: -22px; }
+        .next-btn { right: -22px; }
+
+        /* Thumbnail Bar */
+        .thumbnail-strip {
+            display: flex;
+            gap: 6px;
+            margin-top: 14px;
+            overflow-x: auto;
+            padding: 6px;
+        }
+
+        .thumb-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fef08a;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .thumb-btn.active {
+            background: #f59e0b;
+            color: #1c1109;
+            transform: scale(1.15);
+        }
+
+        /* Pemutar Musik Vinyl */
+        .music-player-bar {
+            width: 100%;
+            max-width: 860px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(254, 243, 199, 0.8);
+            border-radius: 18px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            margin-top: 14px;
+            margin-bottom: 14px;
+            z-index: 10;
+        }
+
+        .vinyl-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .vinyl-disc {
+            width: 42px;
+            height: 42px;
+            background: #18181b;
+            border-radius: 50%;
+            border: 2px solid #f59e0b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .vinyl-disc.spin {
+            animation: rotateVinyl 4s linear infinite;
+        }
+        @keyframes rotateVinyl {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .vinyl-center {
+            width: 14px;
+            height: 14px;
+            background: #f59e0b;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .song-meta { display: flex; flex-direction: column; }
+        .song-title { font-size: 12px; font-weight: 700; color: #1c1917; }
+        .song-artist { font-size: 10px; color: #78716c; }
+
+        .playback-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: #78716c;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+        }
+        .icon-btn:hover { color: #1c1917; background: rgba(0,0,0,0.05); }
+
+        .play-main-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4);
+            transition: transform 0.2s ease;
+        }
+        .play-main-btn:hover { transform: scale(1.08); }
+
+        .scrubber-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .time-label { font-size: 11px; font-family: monospace; color: #78716c; width: 32px; }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #e7e5e4;
+            border-radius: 9999px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #f59e0b, #e11d48);
+            border-radius: 9999px;
+        }
+
+        .toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            border: 1px solid #e7e5e4;
+            background: #fafaf9;
+            font-size: 11px;
+            font-weight: 600;
+            color: #78716c;
+            cursor: pointer;
+        }
+        .toggle-btn.active {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: #f59e0b;
+            color: #b45309;
+        }
+
+        /* Modal Dialog */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 16px;
+        }
+
+        .hidden { display: none !important; }
+
+        .modal-box {
+            position: relative;
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -36px;
+            right: 0;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .sealed-envelope {
+            background: #fef3c7;
+            border: 2px solid #fde68a;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transition: transform 0.2s ease;
+        }
+        .sealed-envelope:hover { transform: scale(1.02); }
+
+        .wax-seal {
+            width: 76px;
+            height: 76px;
+            background: #be123c;
+            border: 3px solid #9f1239;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ffe4e6;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+        .wax-seal span { font-size: 11px; font-weight: 800; letter-spacing: 1px; margin-top: 2px; }
+
+        .seal-hint {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #92400e;
+            font-weight: 600;
+        }
+
+        .opened-letter {
+            background: #fffdfa;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .letter-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #a8a29e;
+            border-bottom: 1px solid #f5f5f4;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .script-tag { font-family: 'Caveat', cursive; font-size: 16px; color: #e11d48; }
+
+        .letter-body h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: #291b10;
+            margin-bottom: 14px;
+        }
+
+        .letter-body p {
+            font-family: 'Caveat', cursive;
+            font-size: 22px;
+            color: #442a1a;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+
+        .letter-signature {
+            margin-top: 24px;
+            border-top: 1px solid #f5f5f4;
+            padding-top: 14px;
+        }
+        .letter-signature span { font-size: 12px; color: #a8a29e; }
+        .sig-name { font-family: 'Caveat', cursive; font-size: 28px; color: #291b10; }
+
+        /* Zoom Modal */
+        .zoom-box {
+            text-align: center;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+        .zoom-box img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+        .zoom-hint { color: #f5f5f4; font-family: 'Caveat', cursive; font-size: 18px; margin-top: 10px; }
+
+        /* Responsif Layar Kecil */
+        @media (max-width: 768px) {
+            .book { aspect-ratio: auto; flex-direction: column; min-height: 580px; }
+            .page { width: 100%; }
+            .left-page { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); padding: 20px; }
+            .right-page { padding: 20px; }
+            .top-nav { padding: 12px 16px; }
+            .music-player-bar { flex-wrap: wrap; }
+            .scrubber-wrapper { order: 3; width: 100%; }
+            .nav-btn { display: none; }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="book-container">
-            <div class="book">
-                <div class="page left-page">
-                    <div id="lyrics-container"></div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/1.jpg" alt="Foto 1">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/2.jpg" alt="Foto 2">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/3.jpg" alt="Foto 3">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/4.jpg" alt="Foto 4">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/5.jpg" alt="Foto 5">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/6.jpg" alt="Foto 6">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/7.jpg" alt="Foto 7">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/8.jpg" alt="Foto 8">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/9.jpg" alt="Foto 9">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/10.jpg" alt="Foto 10">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/11.jpg" alt="Foto 11">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/12.jpg" alt="Foto 12">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/13.jpg" alt="Foto 13">
-                    <div class="author-name">amaaa</div>
-                </div>
-                <div class="page right-page">
-                    <img src="img/14.jpg" alt="Foto 14">
-                    <div class="author-name">amaaa</div>
-                </div>
+    <!-- Efek Partikel Kelopak Bunga Melayang di Latar Belakang -->
+    <canvas id="petals-canvas"></canvas>
+
+    <!-- Top Header Bar -->
+    <header class="top-nav">
+        <div class="brand">
+            <span class="cap-badge">🎓</span>
+            <div>
+                <h1>Buat Kae</h1>
+                <span class="sub">Happy Graduation Cantik</span>
             </div>
         </div>
-        <div class="music-player">
-            <div id="play-pause" class="play-button">
-                <i data-feather="play"></i>
+        <div class="top-actions">
+            <button id="btn-cheer" class="pill-btn highlight-btn">
+                <i data-feather="sparkles"></i> <span>Rayakan Wisuda!</span>
+            </button>
+            <button id="btn-open-letter" class="pill-btn letter-btn">
+                <i data-feather="mail"></i> <span>Surat Rahasia</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="book-container">
+            <!-- Cover Album Hardcover -->
+            <div id="book-cover" class="book-cover">
+                <div class="cover-filigree top-left">❧</div>
+                <div class="cover-filigree top-right">❧</div>
+                <div class="cover-filigree bottom-left">❧</div>
+                <div class="cover-filigree bottom-right">❧</div>
+                
+                <div class="cover-badge">Edisi Spesial Kelulusan 🎓</div>
+                <div class="cover-title-group">
+                    <h2 class="cover-title">Buat Kae</h2>
+                    <p class="cover-subtitle">A Little Keepsake for My Favorite Graduate</p>
+                    <div class="gold-line"></div>
+                </div>
+                <button id="btn-open-book" class="btn-primary">
+                    <i data-feather="book-open"></i> Buka Album Kenangan
+                </button>
+                <span class="cover-author">Dibuat penuh cinta oleh Kemal</span>
             </div>
-            <div id="song-duration"></div>
-            <audio id="audio" src="assets/audio/lemonade.mp3"></audio>
+
+            <!-- Photobook Dua Halaman (Spread) -->
+            <div id="book-pages" class="book hidden">
+                <!-- Pita Pembatas Buku -->
+                <div class="bookmark-ribbon" title="Buka Surat Spesial"></div>
+
+                <!-- Halaman Kiri: Lirik Lemonade & Pesan Puitis -->
+                <div class="page left-page paper-texture">
+                    <div class="page-meta">
+                        <span>Kenangan Manis</span>
+                        <span id="page-counter">Hal. 1 / 14</span>
+                    </div>
+
+                    <div class="lyrics-wrapper">
+                        <div class="lemon-icon">🍋</div>
+                        <div class="quote-mark">“</div>
+                        <div id="lyrics-container" class="lyrics-text">
+                            She's my sunshine in the rain
+                        </div>
+                        <div id="lyrics-translation" class="lyrics-translation">
+                            Dia adalah cahaya matahariku di kala hujan...
+                        </div>
+                        <div class="quote-mark right-mark">”</div>
+                    </div>
+
+                    <div class="page-footer">
+                        <span class="for-kae">Untuk Kae tercinta 🤍</span>
+                        <button id="btn-close-book" class="text-link">Tutup Sampul</button>
+                    </div>
+                </div>
+
+                <!-- Halaman Kanan: Foto Polaroid & Catatan Tangan -->
+                <div class="page right-page paper-texture">
+                    <div class="polaroid-card" id="polaroid-frame">
+                        <div class="washi-tape"></div>
+                        <div class="photo-wrapper" id="photo-zoom-trigger">
+                            <img id="current-photo" src="img/1.jpg" alt="Foto Kae Wisuda" onerror="this.src='https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=900&auto=format&fit=crop'">
+                            <div class="zoom-badge"><i data-feather="maximize-2"></i> Perbesar</div>
+                            <div id="page-sticker" class="sticker">🎓</div>
+                        </div>
+                        <div class="polaroid-caption">
+                            <h3 id="author-name" class="caption-text">Happy Graduation Cantik</h3>
+                            <span id="caption-date" class="caption-sub">Hari Wisuda · Tangga Keagungan</span>
+                        </div>
+                    </div>
+                    <span class="right-page-num" id="right-page-num">1</span>
+                </div>
+
+                <!-- Tombol Navigasi Kiri / Kanan -->
+                <button id="btn-prev" class="nav-btn prev-btn" title="Halaman Sebelumnya">
+                    <i data-feather="chevron-left"></i>
+                </button>
+                <button id="btn-next" class="nav-btn next-btn" title="Halaman Berikutnya">
+                    <i data-feather="chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Thumbnail Strip Navigasi Halaman -->
+        <div id="thumbnail-strip" class="thumbnail-strip hidden"></div>
+
+        <!-- Pemutar Musik Vinyl Bar -->
+        <div class="music-player-bar">
+            <!-- Vinyl Disc -->
+            <div class="vinyl-group">
+                <div id="vinyl-disc" class="vinyl-disc">
+                    <div class="vinyl-center"></div>
+                </div>
+                <div class="song-meta">
+                    <span class="song-title">Lemonade</span>
+                    <span class="song-artist">Jeremy Passion (Acoustic)</span>
+                </div>
+            </div>
+
+            <!-- Controls & Scrubber -->
+            <div class="playback-controls">
+                <button id="btn-restart" class="icon-btn" title="Mulai dari Awal">
+                    <i data-feather="rotate-ccw"></i>
+                </button>
+                <button id="play-pause" class="play-main-btn" title="Putar Lagu">
+                    <i data-feather="play"></i>
+                </button>
+            </div>
+
+            <div class="scrubber-wrapper">
+                <span id="current-time" class="time-label">0:00</span>
+                <div id="progress-container" class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <span id="total-duration" class="time-label">1:25</span>
+            </div>
+
+            <div class="player-options">
+                <button id="btn-autoflip" class="toggle-btn active" title="Balik halaman otomatis mengikuti lirik lagu">
+                    <i data-feather="zap"></i> <span>Auto-Flip</span>
+                </button>
+            </div>
+
+            <audio id="audio" src="assets/audio/lemonade.mp3" preload="metadata"></audio>
+        </div>
+    </main>
+
+    <!-- Modal 1: Surat Rahasia Dalam Amplop Segel Lilin -->
+    <div id="letter-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <button id="btn-close-letter" class="close-btn">&times;</button>
+            
+            <!-- Tampilan Segel Lilin Sebelum Dibuka -->
+            <div id="sealed-envelope" class="sealed-envelope">
+                <div class="envelope-flap"></div>
+                <div class="wax-seal" id="wax-seal">
+                    <i data-feather="heart"></i>
+                    <span>KAE</span>
+                </div>
+                <p class="seal-hint">Klik segel lilin untuk membuka surat spesial 💌</p>
+            </div>
+
+            <!-- Tampilan Kertas Surat Setelah Segel Dibuka -->
+            <div id="opened-letter" class="opened-letter hidden paper-texture">
+                <div class="letter-header">
+                    <span>WISUDA SPESIAL · OKTOBER 2026</span>
+                    <span class="script-tag">Hanya untuk Kae</span>
+                </div>
+                <div class="letter-body">
+                    <h2>Dear Kae,</h2>
+                    <p>Selamat udah official S.I.Kom! Hari yang menjadi bukti nyata dari setiap tetes perjuangan, malam-malam panjang belajar, dan keteguhan hatimu yang luar biasa.</p>
+                    <p>Melihatmu mengenakan toga dan senyum bahagia membuat aku banggaaa. Kamu bukan hanya menyelesaikan kuliah dengan hebat, tapi kamu selalu menjadi <em>'sunshine in the rain'</em> dan penenang di setiap hariku.</p>
+                    <p>Selamat melangkah ke dunia baru, Kae. Apa pun impian yang ingin kamu tuju, aku akan selalu ada mendukung dan bangga padamu.</p>
+                    <div class="letter-signature">
+                        <span>Tertanda penuh cinta & bangga,</span>
+                        <h4 class="sig-name">Kemal 🤍✨</h4>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <!-- Modal 2: Perbesar Foto Zoom -->
+    <div id="zoom-modal" class="modal-overlay hidden">
+        <div class="zoom-box">
+            <img id="zoom-img" src="" alt="Perbesar Foto">
+            <p class="zoom-hint">Klik di mana saja untuk menutup</p>
+        </div>
+    </div>
+
     <script>
-        feather.replace(); 
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof feather !== 'undefined') feather.replace();
+
+            // Data Lirik Lemonade & Terjemahan Romantis
+            const lyricsData = [
+                { time: 0, text: "♪ ... ", trans: "Selamat atas gelar barunya Kae:)" },
+                { time: 14, text: "She's my sunshine in the rain", trans: "" },
+                { time: 19, text: "My Tylenol when I'm in pain yeah", trans: "" },
+                { time: 23, text: "Let me tell you what she means to me", trans: "" },
+                { time: 30, text: "Like a tall glass of lemonade", trans: "" },
+                { time: 33, text: "When it's burning hot on summer days", trans: "" },
+                { time: 39, text: "She's exactly what I need", trans: "" },
+                { time: 44, text: "She's soothing like the ocean rushing on the sand", trans: "" },
+                { time: 51, text: "She takes care of me baby", trans: "" },
+                { time: 56, text: "And she helps me be a better man", trans: "" },
+                { time: 59, text: "She's so beautiful sometimes I stop to close my eyes", trans: "" },
+                { time: 67, text: "She's exactly what I need", trans: "" },
+                { time: 75, text: "She's my smile when I'm feeling blue", trans: "" },
+                { time: 82, text: "Happy Graduation, my favorite girl ✨", trans: "" }
+            ];
+
+            // Data 14 Foto Polaroid
+            const pagesData = [
+                { img: "img/1.jpg", caption: "Happy Graduation Cantik! 🎓✨", sub: "Hari Wisuda · Kaela Amandira", sticker: "🎓" },
+                { img: "img/2.jpg", caption: "She's my sunshine in the rain", sub: "", sticker: "🌸" },
+                { img: "img/3.jpg", caption: "", sub: "", sticker: "✨" },
+                { img: "img/4.jpg", caption: "", sub: "", sticker: "📚" },
+                { img: "img/5.jpg", caption: "Like a tall glass of lemonade 🍋", sub: "", sticker: "🍋" },
+                { img: "img/6.jpg", caption: "", sub: "", sticker: "🌊" },
+                { img: "img/7.jpg", caption: "", sub: "", sticker: "🤍" },
+                { img: "img/8.jpg", caption: "And she helps me be a better man", sub: "", sticker: "🌿" },
+                { img: "img/9.jpg", caption: "", sub: "", sticker: "👑" },
+                { img: "img/10.jpg", caption: "", sub: "", sticker: "💐" },
+                { img: "img/11.jpg", caption: "She's my smile when I'm feeling blue", sub: "", sticker: "⭐" },
+                { img: "img/12.jpg", caption: "", sub: "", sticker: "📜" },
+                { img: "img/13.jpg", caption: "", sub: "Langkah Pertama", sticker: "🚀" },
+                { img: "img/14.jpg", caption: "Selamanya bangga padamu, Kae! ❤️", sub: "Di Hati Kemal", sticker: "❤️" }
+            ];
+
+            // Elemen DOM
+            const audio = document.getElementById('audio');
+            const playPauseBtn = document.getElementById('play-pause');
+            const vinylDisc = document.getElementById('vinyl-disc');
+            const progressFill = document.getElementById('progress-fill');
+            const progressContainer = document.getElementById('progress-container');
+            const currentTimeEl = document.getElementById('current-time');
+            const totalDurationEl = document.getElementById('total-duration');
+            const lyricsContainer = document.getElementById('lyrics-container');
+            const lyricsTranslation = document.getElementById('lyrics-translation');
+
+            const bookCover = document.getElementById('book-cover');
+            const bookPages = document.getElementById('book-pages');
+            const btnOpenBook = document.getElementById('btn-open-book');
+            const btnCloseBook = document.getElementById('btn-close-book');
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+            const thumbnailStrip = document.getElementById('thumbnail-strip');
+
+            const currentPhoto = document.getElementById('current-photo');
+            const authorName = document.getElementById('author-name');
+            const captionDate = document.getElementById('caption-date');
+            const pageSticker = document.getElementById('page-sticker');
+            const pageCounter = document.getElementById('page-counter');
+            const rightPageNum = document.getElementById('right-page-num');
+            const polaroidFrame = document.getElementById('polaroid-frame');
+
+            const btnCheer = document.getElementById('btn-cheer');
+            const btnOpenLetter = document.getElementById('btn-open-letter');
+            const letterModal = document.getElementById('letter-modal');
+            const btnCloseLetter = document.getElementById('btn-close-letter');
+            const sealedEnvelope = document.getElementById('sealed-envelope');
+            const openedLetter = document.getElementById('opened-letter');
+
+            const zoomModal = document.getElementById('zoom-modal');
+            const zoomImg = document.getElementById('zoom-img');
+            const photoZoomTrigger = document.getElementById('photo-zoom-trigger');
+            const btnAutoflip = document.getElementById('btn-autoflip');
+
+            let currentPage = 0;
+            let isAutoFlip = true;
+            let isSynthPlaying = false;
+            let synthInterval = null;
+
+            // Efek Suara Kertas Halus
+            function playPaperSound() {
+                try {
+                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    const bufferSize = ctx.sampleRate * 0.12;
+                    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+                    }
+                    const noise = ctx.createBufferSource();
+                    noise.buffer = buffer;
+                    const filter = ctx.createBiquadFilter();
+                    filter.type = 'bandpass';
+                    filter.frequency.setValueAtTime(1200, ctx.currentTime);
+                    const gain = ctx.createGain();
+                    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.11);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(ctx.destination);
+                    noise.start();
+                } catch(e) {}
+            }
+
+            // Tampilkan Halaman
+            function renderPage(idx) {
+                if (idx < 0 || idx >= pagesData.length) return;
+                currentPage = idx;
+                const data = pagesData[idx];
+
+                currentPhoto.src = data.img;
+                authorName.textContent = data.caption;
+                captionDate.textContent = data.sub;
+                pageSticker.textContent = data.sticker;
+                pageCounter.textContent = `Hal. ${idx + 1} / ${pagesData.length}`;
+                rightPageNum.textContent = idx + 1;
+
+                const rotation = (idx % 2 === 0 ? -1.5 : 1.5);
+                polaroidFrame.style.transform = `rotate(${rotation}deg)`;
+
+                document.querySelectorAll('.thumb-btn').forEach((btn, bIdx) => {
+                    btn.classList.toggle('active', bIdx === idx);
+                });
+
+                playPaperSound();
+            }
+
+            // Inisialisasi Thumbnail Bar
+            pagesData.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `thumb-btn ${idx === 0 ? 'active' : ''}`;
+                btn.textContent = idx + 1;
+                btn.addEventListener('click', () => renderPage(idx));
+                thumbnailStrip.appendChild(btn);
+            });
+
+            // Buka / Tutup Sampul Buku
+            btnOpenBook.addEventListener('click', () => {
+                bookCover.classList.add('hidden');
+                bookPages.classList.remove('hidden');
+                thumbnailStrip.classList.remove('hidden');
+                renderPage(0);
+                if (audio.paused && !isSynthPlaying) toggleMusic();
+            });
+
+            btnCloseBook.addEventListener('click', () => {
+                bookPages.classList.add('hidden');
+                thumbnailStrip.classList.add('hidden');
+                bookCover.classList.remove('hidden');
+                playPaperSound();
+            });
+
+            btnPrev.addEventListener('click', () => {
+                if (currentPage > 0) renderPage(currentPage - 1);
+            });
+
+            btnNext.addEventListener('click', () => {
+                if (currentPage < pagesData.length - 1) renderPage(currentPage + 1);
+            });
+
+            btnAutoflip.addEventListener('click', () => {
+                isAutoFlip = !isAutoFlip;
+                btnAutoflip.classList.toggle('active', isAutoFlip);
+            });
+
+            // Pemutar Audio & Fallback Synth
+            function toggleMusic() {
+                if (!audio.paused || isSynthPlaying) {
+                    audio.pause();
+                    isSynthPlaying = false;
+                    clearInterval(synthInterval);
+                    playPauseBtn.innerHTML = '<i data-feather="play"></i>';
+                    vinylDisc.classList.remove('spin');
+                    if (typeof feather !== 'undefined') feather.replace();
+                } else {
+                    audio.play().then(() => {
+                        playPauseBtn.innerHTML = '<i data-feather="pause"></i>';
+                        vinylDisc.classList.add('spin');
+                        if (typeof feather !== 'undefined') feather.replace();
+                    }).catch(() => {
+                        isSynthPlaying = true;
+                        playPauseBtn.innerHTML = '<i data-feather="pause"></i>';
+                        vinylDisc.classList.add('spin');
+                        if (typeof feather !== 'undefined') feather.replace();
+                        let fakeTime = 0;
+                        synthInterval = setInterval(() => {
+                            fakeTime += 0.5;
+                            updatePlayer(fakeTime, 85);
+                            if (fakeTime >= 85) fakeTime = 0;
+                        }, 500);
+                    });
+                }
+            }
+
+            playPauseBtn.addEventListener('click', toggleMusic);
+
+            function formatTime(secs) {
+                const m = Math.floor(secs / 60);
+                const s = Math.floor(secs % 60);
+                return `${m}:${s.toString().padStart(2, '0')}`;
+            }
+
+            function updatePlayer(current, duration) {
+                currentTimeEl.textContent = formatTime(current);
+                totalDurationEl.textContent = formatTime(duration);
+                progressFill.style.width = `${(current / duration) * 100}%`;
+
+                const matched = [...lyricsData].reverse().find(l => current >= l.time) || lyricsData[0];
+                if (lyricsContainer.textContent !== matched.text) {
+                    lyricsContainer.textContent = matched.text;
+                    lyricsTranslation.textContent = matched.trans;
+
+                    if (isAutoFlip) {
+                        const lyricIdx = lyricsData.indexOf(matched);
+                        if (lyricIdx !== -1 && lyricIdx < pagesData.length && lyricIdx !== currentPage) {
+                            renderPage(lyricIdx);
+                        }
+                    }
+                }
+            }
+
+            audio.addEventListener('timeupdate', () => {
+                updatePlayer(audio.currentTime, audio.duration || 85);
+            });
+
+            progressContainer.addEventListener('click', (e) => {
+                const rect = progressContainer.getBoundingClientRect();
+                const ratio = (e.clientX - rect.left) / rect.width;
+                if (audio.duration) audio.currentTime = ratio * audio.duration;
+            });
+
+            document.getElementById('btn-restart').addEventListener('click', () => {
+                audio.currentTime = 0;
+                if (audio.paused) toggleMusic();
+            });
+
+            // Konfeti Wisuda
+            btnCheer.addEventListener('click', () => {
+                if (typeof confetti !== 'undefined') {
+                    confetti({
+                        particleCount: 70,
+                        spread: 90,
+                        origin: { y: 0.6 },
+                        colors: ['#f59e0b', '#ec4899', '#38bdf8', '#ffffff']
+                    });
+                }
+            });
+
+            // Surat Rahasia & Segel Lilin
+            btnOpenLetter.addEventListener('click', () => {
+                letterModal.classList.remove('hidden');
+            });
+
+            document.querySelector('.bookmark-ribbon').addEventListener('click', () => {
+                letterModal.classList.remove('hidden');
+            });
+
+            btnCloseLetter.addEventListener('click', () => {
+                letterModal.classList.add('hidden');
+            });
+
+            sealedEnvelope.addEventListener('click', () => {
+                sealedEnvelope.classList.add('hidden');
+                openedLetter.classList.remove('hidden');
+                if (typeof confetti !== 'undefined') {
+                    confetti({
+                        particleCount: 50,
+                        spread: 60,
+                        origin: { y: 0.5 },
+                        colors: ['#e11d48', '#fbcfe8', '#fbbf24']
+                    });
+                }
+            });
+
+            // Zoom Foto
+            photoZoomTrigger.addEventListener('click', () => {
+                zoomImg.src = currentPhoto.src;
+                zoomModal.classList.remove('hidden');
+            });
+
+            zoomModal.addEventListener('click', () => {
+                zoomModal.classList.add('hidden');
+            });
+
+            // Animasi Partikel Kelopak Bunga (Canvas)
+            const canvas = document.getElementById('petals-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let width = canvas.width = window.innerWidth;
+                let height = canvas.height = window.innerHeight;
+
+                window.addEventListener('resize', () => {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                });
+
+                const petals = Array.from({ length: 22 }, () => ({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 8 + 6,
+                    speedX: Math.random() * 1 - 0.3,
+                    speedY: Math.random() * 1.2 + 0.5,
+                    rot: Math.random() * 360,
+                    color: ['#fbcfe8', '#f472b6', '#fed7aa', '#fde047'][Math.floor(Math.random() * 4)]
+                }));
+
+                function loopPetals() {
+                    ctx.clearRect(0, 0, width, height);
+                    petals.forEach(p => {
+                        p.x += p.speedX;
+                        p.y += p.speedY;
+                        p.rot += 1;
+                        if (p.y > height + 20) p.y = -20;
+                        if (p.x > width + 20) p.x = -20;
+
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate((p.rot * Math.PI) / 180);
+                        ctx.fillStyle = p.color;
+                        ctx.globalAlpha = 0.45;
+                        ctx.beginPath();
+                        ctx.moveTo(0, 0);
+                        ctx.quadraticCurveTo(p.size, -p.size, p.size * 1.4, 0);
+                        ctx.quadraticCurveTo(p.size, p.size, 0, 0);
+                        ctx.fill();
+                        ctx.restore();
+                    });
+                    requestAnimationFrame(loopPetals);
+                }
+                loopPetals();
+            }
+        });
     </script>
 </body>
 </html>
